@@ -42,8 +42,8 @@ const MyBookings = () => {
             {!item.isPaid && <button className='bg-primary px-4 py-1.5 mb-3 text-sm rounded-full font-medium cursor-pointer'>Pay Now</button>}
           </div>
           <div className='text-sm'>
-            <p><span className='text-gray-400'>Total Tickets</span>{item.bookedSeats.length}</p>
-            <p><span className='text-gray-400'>Seat Number:</span>{item.bookedSeats.join(", ")}</p>
+            <p><span className='text-gray-400'>Total Tickets: </span>{item.bookedSeats.length}</p>
+            <p><span className='text-gray-400'>Seat Number: </span>{item.bookedSeats.join(", ")}</p>
           </div>
           </div>
         </div>
