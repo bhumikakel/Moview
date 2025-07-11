@@ -21,7 +21,6 @@ app.use(clerkMiddleware())
 app.get('/',(req,res)=>res.send('server is live!'));
 app.use('/api/inngest', serve({ client: inngest, functions }));
 
-app.listen(port,()=>console.log(`Server is running at http://localhost: ${port}`)
-)
+
 export default app;
 
