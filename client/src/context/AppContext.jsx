@@ -20,6 +20,7 @@ export const AppProvider = ({ children }) => {
   const navigate = useNavigate();
   const fetchIsAdmin = async () => {
     try {
+      
       const { data } = await axios.get("/api/admin/is-admin", {
         headers: {
           Authorization: `Bearer ${await getToken()}`,
@@ -59,6 +60,7 @@ export const AppProvider = ({ children }) => {
       if (data.success) {
         setFavoriteMovies(data.movies);
       } else {
+
         toast.error(data.message);
       }
     } catch (error) {
