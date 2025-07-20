@@ -5,6 +5,7 @@ export const protectAdmin=async(req,res,next)=>{
     console.log(req.auth());
     
     
+    
 
     const user= await clerkClient.users.getUser(userId)
 
