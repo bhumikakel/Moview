@@ -7,8 +7,7 @@ import Movie from "../models/Movie.js";
 export const getUserBookings=async(req,res)=>{
   try{
     const user =req.auth().userId;
-    console.log( req.auth());
-    
+   
 
     const bookings=await Booking.find({user}).populate({
       path:"show",
@@ -29,7 +28,7 @@ export const updateFavorite=async(req,res)=>{
   try{
     const {movieId}=req.body;
     const userId =req.auth().userId;
-    console.log( req.auth());
+    
     
 
     const user=await clerkClient.users.getUser(userId)
@@ -58,7 +57,7 @@ export const updateFavorite=async(req,res)=>{
 export const getFavorites =async(req,res)=>{
   try{
     const user=await clerkClient.users.getUser(req.auth().userId)
-    console.log( req.auth());
+    
     
     const favorites =user.privateMetadata.favorites;
 
