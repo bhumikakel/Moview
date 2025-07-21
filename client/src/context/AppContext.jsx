@@ -12,7 +12,7 @@ export const AppProvider = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [shows, setShows] = useState([]);
   const [favoriteMovies, setFavoriteMovies] = useState([]);
-  const { user, isLoaded } = useUser(); //Gets the currently logged-in user from Clerk.
+  const { user } = useUser(); //Gets the currently logged-in user from Clerk.
 
   const { getToken } = useAuth(); //Gives access to function getToken() to get the user's JWT token for secure API calls.
 
@@ -20,7 +20,8 @@ export const AppProvider = ({ children }) => {
   const navigate = useNavigate();
   const fetchIsAdmin = async () => {
     try {
-      
+      console.log(await getToken());
+
       const { data } = await axios.get("/api/admin/is-admin", {
         headers: {
           Authorization: `Bearer ${await getToken()}`,
@@ -60,7 +61,6 @@ export const AppProvider = ({ children }) => {
       if (data.success) {
         setFavoriteMovies(data.movies);
       } else {
-
         toast.error(data.message);
       }
     } catch (error) {
@@ -73,7 +73,7 @@ export const AppProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (isLoaded && user) {
+    if (user) {
       fetchIsAdmin();
       fetchFavoriteMovies();
     }
