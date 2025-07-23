@@ -6,9 +6,9 @@ import Show from "../models/Show.js";
 export const getNowPlayingMovies = async (req,res)=>{
   try{
     const {data} = await axios.get('https://api.themoviedb.org/3/movie/now_playing',{
-       params: {
-        api_key: process.env.TMDB_API_KEY  // use this for v3 keys
-      }
+       headers: {
+    Authorization: `Bearer ${process.env.TMDB_API_KEY}`
+  },
     })
     const movies = data.results;
     res.json({success:true, movies:movies})
@@ -30,14 +30,14 @@ export const addShow = async(req,res)=>{
       // Fetch movie details and credits from TMDB
       const [movieDetailsResponse,movieCreditsResponse]=await Promise.all([
         axios.get(`https://api.themoviedb.org/3/movie/${movieId}`,{
-       params: {
-        api_key: process.env.TMDB_API_KEY  // use this for v3 keys
-      }
+       headers: {
+    Authorization: `Bearer ${process.env.TMDB_API_KEY}`
+  },
     }),
     axios.get(`https://api.themoviedb.org/3/movie/${movieId}/credits`,{
-       params: {
-        api_key: process.env.TMDB_API_KEY  // use this for v3 keys
-      }
+       headers: {
+    Authorization: `Bearer ${process.env.TMDB_API_KEY}`
+  },
     })
       ]);
 
