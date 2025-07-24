@@ -12,7 +12,8 @@ export const AppProvider = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [shows, setShows] = useState([]);
   const [favoriteMovies, setFavoriteMovies] = useState([]);
-  const { user, isLoaded } = useUser(); //Gets the currently logged-in user from Clerk.
+  const image_base_url = import.meta.env.VITE_TMDB_IMAGE_BASE_URL;
+  const { user } = useUser(); //Gets the currently logged-in user from Clerk.
 
   const { getToken } = useAuth(); //Gives access to function getToken() to get the user's JWT token for secure API calls.
 
@@ -20,14 +21,12 @@ export const AppProvider = ({ children }) => {
   const navigate = useNavigate();
   const fetchIsAdmin = async () => {
     try {
-      console.log(await getToken());
-
       const token = await getToken();
       if (!token) return console.warn("Token not available yet");
 
       const { data } = await axios.get("/api/admin/is-admin", {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`
         },
       });
 
@@ -47,6 +46,8 @@ export const AppProvider = ({ children }) => {
       const { data } = await axios.get("/api/show/all");
       if (data.success) {
         setShows(data.shows);
+        
+        
       } else {
         toast.error(data.message);
       }
@@ -77,11 +78,11 @@ export const AppProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (isLoaded && user) {
+    if (user) {
       fetchIsAdmin();
       fetchFavoriteMovies();
     }
-  }, [isLoaded,user]);
+  }, [user]);
 
   const value = {
     axios,
@@ -93,6 +94,7 @@ export const AppProvider = ({ children }) => {
     shows,
     favoriteMovies,
     fetchFavoriteMovies,
+    image_base_url,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

@@ -7,7 +7,7 @@ export const getNowPlayingMovies = async (req,res)=>{
   try{
     const {data} = await axios.get('https://api.themoviedb.org/3/movie/now_playing',{
        params: { api_key: process.env.TMDB_API_KEY },
-    timeout: 5000
+    
 
     })
     const movies = data.results;
@@ -31,11 +31,11 @@ export const addShow = async(req,res)=>{
       const [movieDetailsResponse,movieCreditsResponse]=await Promise.all([
         axios.get(`https://api.themoviedb.org/3/movie/${movieId}`,{
        params: { api_key: process.env.TMDB_API_KEY },
-    timeout: 5000
+    
     }),
     axios.get(`https://api.themoviedb.org/3/movie/${movieId}/credits`,{
        params: { api_key: process.env.TMDB_API_KEY },
-    timeout: 5000
+   
     })
       ]);
 
