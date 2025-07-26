@@ -1,8 +1,8 @@
 import { response } from "express";
 import stripe from "stripe";
 import Booking from "../models/Booking.js";
-export const stripeWebhooks=async(req,res)=>{
-  const stripeInstance =new stripe(process.envSTRIPE_SECRET_KEY)
+export const stripeWebhooks=async(request,response)=>{
+  const stripeInstance =new stripe(process.env.STRIPE_SECRET_KEY)
   const sig=request.headers["stripe-signature"];
 
 
