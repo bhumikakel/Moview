@@ -1,4 +1,4 @@
-import express from "express";
+import express, { application } from "express";
 import cors from 'cors';
 import 'dotenv/config';
 import connectDB from "./configs/db.js";
@@ -11,10 +11,17 @@ import bookingRouter from "./routes/bookingRoutes.js";
 import adminRouter from "./routes/adminRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 
+import { stripeWebhooks } from "./controllers/stripeWebhooks.js";
+
 const app=express();
 const port=3000;
 
 await connectDB()
+
+// Stripe Webhook Route
+app.use('/api/stripe',express.raw({
+  type:"application/json"
+}),stripeWebhooks)
 
 //Middleware
 app.use(express.json());
