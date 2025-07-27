@@ -105,8 +105,6 @@ const sendBookingConfirmationEmail = inngest.createFunction(
       <p>Your Booked Seats are: <strong style="color: #9f29d5ff;">
         ${booking.bookedSeats.join(", ")}
       </strong></p>
-
-      <p>
       <p>Enjoy the show! </p>
       <p>Thanks for booking with us! <br>-Moview Team</p>
       </div>
