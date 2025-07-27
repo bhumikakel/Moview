@@ -121,7 +121,7 @@ const sendShowReminders = inngest.createFunction(
 
   async ({ step }) => {
     const now = new Date();
-    const in8Hours = new Date(now.getTime() + 8 * 60 * 60 * 1000);
+    const in8Hours = new Date(now.getTime() + 4 * 60 * 60 * 1000);
 
     // Find all shows in next 8 hours where reminder hasn't been sent
     const reminderTasks = await step.run("prepare-reminder-tasks", async () => {
