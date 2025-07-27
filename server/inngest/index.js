@@ -121,17 +121,13 @@ const sendShowReminders = inngest.createFunction(
 
   async ({ step }) => {
     const now = new Date();
-
-    // Define 8 hours from now and a +/- 5-minute buffer
     const in8Hours = new Date(now.getTime() + 8 * 60 * 60 * 1000);
-    const windowStart = new Date(in8Hours.getTime() - 5 * 60 * 1000);
-    const windowEnd = new Date(in8Hours.getTime() + 5 * 60 * 1000);
 
-    // Prepare reminder tasks
+    // Find all shows in next 8 hours where reminder hasn't been sent
     const reminderTasks = await step.run("prepare-reminder-tasks", async () => {
       const shows = await Show.find({
-        showTime: { $gte: windowStart, $lte: windowEnd },
-        reminderSent: false, // ✅ Only fetch shows that haven't been reminded yet
+        showTime: { $gte: now, $lte: in8Hours },
+        reminderSent: false,
       }).populate("movie");
 
       const tasks = [];
@@ -145,11 +141,11 @@ const sendShowReminders = inngest.createFunction(
 
         for (const user of users) {
           tasks.push({
+            showId: show._id,
             userEmail: user.email,
             userName: user.name,
             movieTitle: show.movie.title,
             showTime: show.showTime,
-            showId: show._id, // ✅ Track show ID
           });
         }
       }
@@ -161,7 +157,7 @@ const sendShowReminders = inngest.createFunction(
       return { sent: 0, message: "No reminders to send." };
     }
 
-    // Send reminder emails
+    // Send emails
     const results = await step.run("send-all-reminders", async () => {
       return await Promise.allSettled(
         reminderTasks.map((task) =>
@@ -181,7 +177,7 @@ const sendShowReminders = inngest.createFunction(
               timeZone: "Asia/Kolkata",
             })}</strong>.
     </p>
-    <p>It starts in approximately <strong>8 hours</strong> - make sure you're ready!</p>
+    <p>It starts in less than <strong>8 hours</strong> - make sure you're ready!</p>
     <br/>
     <p>Enjoy the show!<br/>Moview Team</p>
   </div>
@@ -194,12 +190,14 @@ const sendShowReminders = inngest.createFunction(
     const sent = results.filter((r) => r.status === "fulfilled").length;
     const failed = results.length - sent;
 
-    // ✅ Mark those shows as "reminder sent"
-    const showIdsToUpdate = [...new Set(reminderTasks.map((task) => task.showId.toString()))];
-    await Show.updateMany(
-      { _id: { $in: showIdsToUpdate } },
-      { $set: { reminderSent: true } }
-    );
+    // Update reminderSent = true for the shows where emails were sent
+    await step.run("mark-reminders-sent", async () => {
+      const sentShowIds = [...new Set(reminderTasks.map((task) => task.showId))];
+      await Show.updateMany(
+        { _id: { $in: sentShowIds } },
+        { $set: { reminderSent: true } }
+      );
+    });
 
     return {
       sent,
@@ -207,7 +205,7 @@ const sendShowReminders = inngest.createFunction(
       message: `Sent ${sent} reminder(s), ${failed} failed.`,
     };
   }
-);
+);  
 
 
 
