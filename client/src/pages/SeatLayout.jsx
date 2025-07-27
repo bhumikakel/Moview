@@ -10,7 +10,7 @@ import { useAppContext } from "../context/AppContext";
 
 
 const SeatLayout = () => {
-  const groupRows=[["A","B"],["C","D"],["E","F"],["G","H"],["I","j"]]
+  const groupRows=[["A","B"],["C","D"],["E","F"],["G","H"],["I","J"]]
   const {id,date} =useParams();
 
   const [selectedSeats,setSelectedSeats]=useState([])
