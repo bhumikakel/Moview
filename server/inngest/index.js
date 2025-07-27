@@ -3,6 +3,7 @@ import User from "../models/User.js";
 import Booking from "../models/Booking.js";
 import Show from "../models/Show.js";
 import sendEmail from "../configs/nodeMailer.js";
+import { isTemporalDuration } from "inngest/helpers/temporal";
 // Create a client to send and receive events
 export const inngest = new Inngest({ id: "movieTV" });
 
@@ -99,8 +100,11 @@ const sendBookingConfirmationEmail = inngest.createFunction(
       <h2>Hi ${booking.user.name},</h2>
       <p>Your booking for <strong style="color:#F84565;">"${booking.show.movie.title}"</strong> is confirmed.</p>
       <p>
-      <strong>Date:</strong>${new Date(booking.show.showDateTime).toLocaleDateString('en-US',{timeZone:'Asia/kolkata'})}
+      <strong>Date:</strong>${new Date(booking.show.showDateTime).toLocaleDateString('en-US',{timeZone:'Asia/kolkata'})}<strong>Date:</strong>${new Date(booking.show.showDateTime).toLocaleTimeString('en-US',{timeZone:'Asia/kolkata'})}
       </p>
+      <p>Your Booked Seats are: <strong style={{ color: "#9f29d5ff" }}>
+        {booking.bookedSeats.join(", ")}
+      </strong></p>
       <p>Enjoy the show! </p>
       <p>Thanks for booking with us! <br>-Moview Team</p>
       </div>
