@@ -120,7 +120,7 @@ const sendShowReminders = inngest.createFunction(
   {cron:"0 */8 * * *"}, //Every 8 hours
   async({step})=>{
     const now= new Date();
-    const in8Hours=new Date(now.getTime() + 8 * 60 * 1000);
+    const in8Hours=new Date(now.getTime() + 8 * 60 * 60 * 1000);
     const windowStart = new Date(in8Hours.getTime() -10 * 60 * 1000);
 
     // Prepare reminder tasks
@@ -141,9 +141,9 @@ const sendShowReminders = inngest.createFunction(
         for(const user of users){
           tasks.push({
             userEmail : user.email,
-            useName:user.name,
+            userName:user.name,
             movieTitle:show.movie.title,
-            showTime:show.shoTime,
+            showTime:show.showTime,
           })
         }
       }
