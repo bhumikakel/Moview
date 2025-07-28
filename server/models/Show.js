@@ -6,7 +6,10 @@ const showSchema = new mongoose.Schema(
     showDateTime:{type:Date, required:true},
     showPrice:{type:Number, required:true},
     occupiedSeats: {type: Object, default:{}},
-    reminderSent: { type: Boolean, default: false },
+    reminderSent: {
+    type: Boolean,
+    default: false,
+}
   },{minimize:false}
 )
 
