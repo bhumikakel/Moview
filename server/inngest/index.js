@@ -117,7 +117,8 @@ const sendBookingConfirmationEmail = inngest.createFunction(
 // Inngest Function to send reminder
 const sendShowReminders = inngest.createFunction(
   { id: "send-show-reminders" },
-  { cron: "0 */1 * * *" }, // Every 1 hours
+  { cron: "*/5 * * * *" } // for quick testing
+, // Every 1 hours
   async ({ step }) => {
     const now = new Date();
     const twoHoursLater = new Date(now.getTime() + 2 * 60 * 60 * 1000);
