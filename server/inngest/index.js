@@ -188,7 +188,7 @@ const sendShowReminders = inngest.createFunction(
     }
 
   }
-)  in show controller where to add this function i m sending controller function too
+) 
 
 
 
