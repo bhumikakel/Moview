@@ -68,9 +68,15 @@ showsInput.forEach(show =>{
   const showDate =show.date;
   show.time.forEach((time)=>{
     const dateTimeString = `${showDate}T${time}`;
+    const istDate = new Date(dateTimeString);
+
+    // Convert IST to UTC by subtracting 5.5 hours
+    const utcTimestamp = istDate.getTime() - (5.5 * 60 * 60 * 1000);
+    const utcDate = new Date(utcTimestamp);
+
     showsToCreate.push({
       movie:movieId,
-      showDateTime:new Date(dateTimeString),
+      showDateTime:utcDate,
       showPrice,
       occupiedSeats:{}
     })
